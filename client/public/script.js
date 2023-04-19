@@ -2,6 +2,10 @@ import { products } from '/data.js';
 
 // Little functions
 
+function createHtmlString(tag, content) {
+  return `<${tag}>${content}</${tag}>`;
+}
+
 const divElement = function (content){
   return `<div>${content}</div>`;
 };
@@ -46,7 +50,7 @@ function displayAlbums(albums){
 
     const albumContent =  divElement(`<button>+</button>
                           ${hElement(album.name, 1)}
-                          ${hElement(album["status"], 2)}`);
+                          ${hElement(album.status, 2)}`);
     album.details.forEach((track) => {
       songs +=  divElement(`${hElement(track.name, 3)}
                 ${pElement(`This song is ${Math.round(track.milliseconds / 1000)} second.`)}
@@ -59,15 +63,18 @@ function displayAlbums(albums){
 // tasks
 // PA 1, taks 1
 
-function searchAlbums(namePart){
+function searchAlbums(albums, namePart){
   const searchedAlbums = [];
 
-  for (const album of products){
+  for (const album of albums){
     if (album.name.includes(namePart)){
       searchedAlbums.push(album);
     }
   }
-  console.log(searchedAlbums);
+
+  return albums.filter(album => album.name.includes(namePart))
+
+  return searchedAlbums;
 }
 
 // PA 1, task 2
@@ -78,7 +85,7 @@ function averageTrackCount(albums){
   for (const album of albums){
     sumTrack += album.details.length;
   }
-  console.log(sumTrack / albums.length);
+  return sumTrack / albums.length;
 }
 
 // PA 1, task 3
@@ -91,7 +98,7 @@ function getAlbumsWithHigherPrice(minPrice){
       resultArray.push(album);
     }
   }
-  console.log(resultArray);
+  return resultArray;
 }
 
 // PA 2, task 1
@@ -99,14 +106,10 @@ function getAlbumsWithHigherPrice(minPrice){
 function getAlbumRuntime(product){
   let resultMilliseconds = 0;
 
-  for (const album of products){
-    if (album === product){
-      for (const track of album.details){
-        resultMilliseconds += track.milliseconds;
-      }
-    }
+  for (const track of product.details){
+    resultMilliseconds += track.milliseconds;
   }
-
+    
   return (resultMilliseconds / 1000);
 }
 
@@ -116,8 +119,9 @@ function getMostValuableAlbumForRuntime(albums){
   let mostValuable = albums[0];
 
   for (let index = 1; index < albums.length; index++){
-    const isBetter = (albums[index].price / getAlbumRuntime(albums[index])) > (mostValuable.price / getAlbumRuntime(mostValuable));
-    if (isBetter){
+    const pricePerSecondCurrent = albums[index].price / getAlbumRuntime(albums[index]);
+    const pricePerSecondMax = mostValuable.price / getAlbumRuntime(mostValuable);
+    if (pricePerSecondCurrent > pricePerSecondMax){
       mostValuable = albums[index];
     }
   }
@@ -132,7 +136,7 @@ function getGenreCount(album){
   const genres = [];
 
   for (const track of album.details){
-    if (!genres.includes(track["genre_id"])){
+    if (!genres.includes(track.genre_id)){
       numberOfGenres++;
       genres.push(track["genre_id"]);
     }
@@ -160,21 +164,21 @@ function getAlbumsWithMultipleGenres(albums){
 // PA 3, task 3
 
 function getOneWordArtistNames(albums){
-  const artistNames = [];
+  const artistNames = new Set();
 
   for (const album of albums){
-    if (!album.vendor.name.includes(" ") && !artistNames.includes(album.vendor.name)){
-      artistNames.push(album.vendor.name);
+    if (!album.vendor.name.includes(" ")){
+      artistNames.add(album.vendor.name);
     }
   }
 
   console.log(artistNames);
-  return artistNames;
+  return Array.from(artistNames);
 }
 
 // EXTRA 1
 
-function getMostComplexSong(albums){
+function getMostComplexSong(albums){  // TODO: divide function into two
   const songsWithComplexity = [];
   let mostComplex = "";
   let highestComplexity = 0;
