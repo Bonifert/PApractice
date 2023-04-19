@@ -26,16 +26,19 @@ const loadEvent = function() {
   getGenreCount(products[140]);
   getAlbumsWithMultipleGenres(products);
   getOneWordArtistNames(products);
-  displayAllAvailableAlbum(products);
+  displayAllAlbumThatRequiresShipping(products);
   totalPrice(products);
-  groupByVendor(products);
+  groupByVendor(products); // pl ez
   averagePrice(products);
   totalNumberOfTrack(products);
+  displayAllAvailableAlbum(products);
+  productAndItsVendor(products); // pl ez
+  sumBytes(products);
 };
 
 window.addEventListener("load", loadEvent);
 
-// tasks
+// product list display html task
 
 function displayAlbums(albums){
   albums.forEach((album) => {
@@ -53,7 +56,7 @@ function displayAlbums(albums){
   });
 }
 
-
+// tasks
 // PA 1, taks 1
 
 function searchAlbums(namePart){
@@ -103,6 +106,7 @@ function getAlbumRuntime(product){
       }
     }
   }
+
   return (resultMilliseconds / 1000);
 }
 
@@ -117,6 +121,7 @@ function getMostValuableAlbumForRuntime(albums){
       mostValuable = albums[index];
     }
   }
+
   console.log(mostValuable);
 }
 
@@ -132,6 +137,7 @@ function getGenreCount(album){
       genres.push(track["genre_id"]);
     }
   }
+
   console.log(numberOfGenres);
   return numberOfGenres;
 }
@@ -146,6 +152,7 @@ function getAlbumsWithMultipleGenres(albums){
       finalAlbums.push(album);
     }
   }
+
   console.log(finalAlbums);
   return finalAlbums;
 }
@@ -160,6 +167,7 @@ function getOneWordArtistNames(albums){
       artistNames.push(album.vendor.name);
     }
   }
+
   console.log(artistNames);
   return artistNames;
 }
@@ -192,9 +200,9 @@ function getMostComplexSong(albums){
 
 // EXTRA 2, task 2
 
-function displayAllAvailableAlbum(albums){
-  console.log(albums.filter(element => element["requires_shipping"]));
-  return albums.filter(element => element.status === "available");
+function displayAllAlbumThatRequiresShipping(albums){
+  console.log(albums.filter((element) => element["requires_shipping"]));
+  return albums.filter((element) => element["requires_shipping"]);
 }
 
 // EXTRA 2, task 3
@@ -246,3 +254,39 @@ function totalNumberOfTrack(albums){
   console.log(total);
   return total;
 }
+
+// EXTRA 2, task 7
+
+function displayAllAvailableAlbum(albums){
+  console.log(albums.filter((element) => element.status === "available"));
+  return albums.filter((element) => element.status === "available");
+}
+
+// EXTRA 2, task 8
+
+function productAndItsVendor(albums){
+  const productsAndVendors = {};
+
+  for (const album of albums){
+    productsAndVendors[album.name] = album.vendor.name;
+  }
+
+  console.log(productsAndVendors);
+  return productsAndVendors;
+}
+
+// EXTRA 2, task 9
+
+function sumBytes(albums){
+  let allBytes = 0;
+
+  for (const album of albums){
+    for (const track of album.details){
+      allBytes += track.bytes;
+    }
+  }
+
+  console.log(allBytes);
+  return allBytes;
+}
+
