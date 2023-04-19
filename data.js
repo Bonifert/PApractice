@@ -42522,7 +42522,7 @@ const products = [
     "id": 323,
     "name": "Carried to Dust (Bonus Track Version)",
     "vendor_id": 253,
-    "requires_shipping": false,
+    "requires_shipping": true,
     "sku": "ALBUM-323",
     "taxable": true,
     "status": "available",
