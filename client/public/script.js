@@ -460,12 +460,12 @@ function averageBytes(albums) {
   let averageAlbumBytesSum = 0;
 
   for (const album of albums) {
-    let sumBytes = 0;
+    let bytesSum = 0;
 
     for (const track of album.details) {
-      sumBytes += track.bytes;
+      bytesSum += track.bytes;
     }
-    averageAlbumBytesSum += sumBytes / album.details.length;
+    averageAlbumBytesSum += bytesSum / album.details.length;
   }
 
   console.log(averageAlbumBytesSum / albums.length);
