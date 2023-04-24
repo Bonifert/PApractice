@@ -51,7 +51,7 @@ window.addEventListener("load", loadEvent);
 // product list display html task
 
 function displayAlbums(albums) {
-  albums.forEach((album) => {
+  for (const album of albums){
     let songs = "";
 
     const albumContent = getElement(
@@ -80,7 +80,7 @@ function displayAlbums(albums) {
           getElement("div", `${getElement("h3", "The songs:")}${getElement("ul", songs)}`)
       )
     );
-  });
+  }
 }
 
 // tasks
